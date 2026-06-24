@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useListProducts, useListCollections } from "@/lib/api-client";
+import type { Product, Collection } from "@/lib/api-client";
 import { useCart } from "@/hooks/use-cart";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -70,13 +71,13 @@ export default function HomePage() {
   );
 
   // Normalize API responses to arrays and add debugging for malformed data
-  let collections = Array.isArray(collectionsData)
+  let collections: Collection[] = Array.isArray(collectionsData)
     ? collectionsData
     : Array.isArray((collectionsData as any)?.collections)
     ? (collectionsData as any).collections
     : [];
 
-  let products = Array.isArray(productsData)
+  let products: Product[] = Array.isArray(productsData)
     ? productsData
     : Array.isArray((productsData as any)?.products)
     ? (productsData as any).products

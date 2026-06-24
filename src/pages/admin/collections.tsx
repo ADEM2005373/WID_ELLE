@@ -36,7 +36,7 @@ export default function AdminCollectionsPage() {
   const { data: collectionsData, isLoading } = useListCollections();
 
   // Normalize collections response and add debug logging
-  const collections = Array.isArray(collectionsData)
+  const collections: Collection[] = Array.isArray(collectionsData)
     ? collectionsData
     : Array.isArray((collectionsData as any)?.collections)
     ? (collectionsData as any).collections
