@@ -33,7 +33,17 @@ export default function AdminCollectionsPage() {
   const [editing, setEditing] = useState<Collection | null>(null);
   const [deleteId, setDeleteId] = useState<string | null>(null);
 
-  const { data: collections = [], isLoading } = useListCollections();
+  const { data: collectionsData, isLoading } = useListCollections();
+
+  // Normalize collections response and add debug logging
+  const collections = Array.isArray(collectionsData)
+    ? collectionsData
+    : Array.isArray((collectionsData as any)?.collections)
+    ? (collectionsData as any).collections
+    : [];
+
+  if (!Array.isArray(collectionsData)) console.error("Collections is not an array", collectionsData);
+  console.log("Collections (admin):", collections);
   const createCollection = useCreateCollection();
   const updateCollection = useUpdateCollection();
   const deleteCollection = useDeleteCollection();

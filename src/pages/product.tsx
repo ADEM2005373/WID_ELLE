@@ -34,7 +34,10 @@ export default function ProductPage() {
   const { data: product, isLoading, error } = useGetProduct(params?.id ?? "", {
     query: { enabled: !!params?.id, queryKey: [`/api/products/${params?.id ?? ""}`] },
   });
-  const { data: related = [] } = useListProducts();
+  const { data: relatedData } = useListProducts();
+
+  // Ensure `related` is always an array to avoid runtime .map errors
+  const related = Array.isArray(relatedData) ? relatedData : [];
 
   if (isLoading) {
     return (

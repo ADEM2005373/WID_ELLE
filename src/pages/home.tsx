@@ -64,10 +64,28 @@ export default function HomePage() {
   const cart = useCart();
   const [activeCollection, setActiveCollection] = useState<string | undefined>(undefined);
 
-  const { data: collections = [], isLoading: collectionsLoading } = useListCollections();
-  const { data: products = [], isLoading: productsLoading } = useListProducts(
+  const { data: collectionsData, isLoading: collectionsLoading } = useListCollections();
+  const { data: productsData, isLoading: productsLoading } = useListProducts(
     activeCollection ? { collection: activeCollection } : undefined
   );
+
+  // Normalize API responses to arrays and add debugging for malformed data
+  let collections = Array.isArray(collectionsData)
+    ? collectionsData
+    : Array.isArray((collectionsData as any)?.collections)
+    ? (collectionsData as any).collections
+    : [];
+
+  let products = Array.isArray(productsData)
+    ? productsData
+    : Array.isArray((productsData as any)?.products)
+    ? (productsData as any).products
+    : [];
+
+  if (!Array.isArray(collectionsData)) console.error("Collections is not an array", collectionsData);
+  if (!Array.isArray(productsData)) console.error("Products is not an array", productsData);
+  console.log("Products:", products);
+  console.log("Collections:", collections);
 
   const collectionsRef = useRef<HTMLElement>(null);
   const productsRef = useRef<HTMLElement>(null);
